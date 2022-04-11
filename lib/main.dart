@@ -1,6 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:hive_flutter/hive_flutter.dart';
+import 'package:money_manager/model/category/category_model.dart';
+import 'package:money_manager/screens/home/screen_home.dart';
 
-void main() {
+Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized(); //to check whether all plugins connected with our platform channel
+  await Hive.initFlutter();
+
+  if(!Hive.isAdapterRegistered(CategoryTypeAdapter().typeId)){
+    Hive.registerAdapter(CategoryTypeAdapter());
+  }
+
+  if(!Hive.isAdapterRegistered(CategoryModelAdapter().typeId)){
+    Hive.registerAdapter(CategoryModelAdapter());
+  }
   runApp(const MyApp());
 }
 
@@ -15,7 +28,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const Text('Flutter Demo Home Page'),
+      home: ScreenHome(),
     );
   }
 }
